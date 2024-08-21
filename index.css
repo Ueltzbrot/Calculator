@@ -1,0 +1,24 @@
+head, html, body{
+
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    box-sizing: border-box;
+    background-color: grey;
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+
+
+.Anfang {
+display:flex;
+justify-content: center;
+align-self: center;
+padding: 2rem;
+background-color: aliceblue;
+max-width:fit-content;
+border-radius: 25px;
+background: #73AD21;
+
+}
