@@ -79,20 +79,70 @@ operate(4,5,"-")
 
 
 function Buttons() {
-    for (let i = 0; i<14; i++){
+    for (let i = 0; i<16; i++){
     const button = document.createElement("button")
     const parent = document.querySelector(".container")
+    button.classList.add("Buttons")
     parent.appendChild(button);
+    
+    button.textContent = i +1;
+    switch(button.textContent){
+        case "11":
+            button.textContent = 0;
+        break;
+        case "10":
+            button.textContent = "+";
+        break;
+        case "12":
+            button.textContent = "-";
+            
+        break;
+        case "13":
+            button.textContent = "x";
+        break;
+        case "14":
+            button.textContent = "/";
+        break;
+        case "15":
+            button.textContent = "=";
+        break;
+        case "16":
+            button.textContent = "clear";
+        break;
+
+
+    }
+
     }
 }
 
 Buttons()
 
-function ZusatzButton (){
-const button = document.createElement("button")
-const parent = document.querySelector(".container")
-button.classList.add("EnterButton")
-parent.appendChild(button);
-}
 
-ZusatzButton()
+const btn = document.querySelectorAll(".Buttons")
+let Value = document.querySelector(".display")
+
+let Eingaben = []
+
+btn.forEach((button)=> {
+    button.addEventListener("click", () => {
+        if (button.textContent !== "clear" &&  !isNaN(parseFloat(button.textContent)) 
+        && isFinite(button.textContent)){
+        Value.textContent = Value.textContent + button.textContent
+        }
+        else if (typeof button.textContent == "string" && button.textContent!== "clear") {
+        Eingaben.push(Value.textContent);
+        Eingaben.push(button.textContent)
+        console.log(Eingaben);
+        Value.textContent = ""
+
+        }else if(button.textContent === "clear"){
+            Value.textContent = ""
+            Eingaben = [];
+            console.log(Eingaben)
+        }
+
+    })
+})
+
+
