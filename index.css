@@ -96,6 +96,10 @@ margin-right: auto;
 .Buttons:hover::before{
     transform: scaleX(1);
 }
+.Buttons:focus::before{
+    transform: scaleX(1);
+}
+
 
 
 .display{

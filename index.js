@@ -1,21 +1,21 @@
 function add(Value1, Value2){
-    console.log((Value1 + Value2))
-    
-    return (Value1 + Value2)
+    let Result = Value1+Value2
+    return Result
     
 }
 
 let substract = (Value1,Value2) => {
-    console.log(Value1 - Value2);
-    return (Value1 - Value2)
+
+    console.log(Value1-Value2)
+    
+    return Value1-Value2
 }
 
 let multiply = (Value1,Value2) => {
     if (Value1 !== 0 && Value2 !== 0){
         let Step1 = Value1*Value2
         let Result = Math.round((Step1+Number.EPSILON)*100)/100;
-        console.log(Result);
-        return (Result); 
+        return Result; 
     }else {
         console.log(0);
         return 0;
@@ -28,8 +28,7 @@ let divide = (Value1,Value2) => {
     if (Value1 !== 0 && Value2 !== 0){
         let Step1 = Value1/Value2
         let Result = Math.round((Step1+Number.EPSILON)*100)/100;
-        console.log(Result);
-        return (Result); 
+        return Result; 
     }else {
         console.log(0);
         return 0;
@@ -53,29 +52,29 @@ let operator =""
 
 
 const operate = (num1, num2, op) => {
-
-    switch (op){
+let lZahlen = num1.length
+let Laenge = op.length
+    switch (op[Laenge-2]){
         case "+":
-            add(num1,num2)
+            return add(parseFloat(num1[lZahlen-2]),parseFloat(num2[lZahlen-1]))
             break;
 
         case "-":
-            substract(num1,num2)
+            return substract(parseFloat(num1[lZahlen-2]),parseFloat(num2[lZahlen-1]))
             break;
 
-        case "*": 
-        multiply(num1,num2)
+        case "x": 
+        return multiply(parseFloat(num1[lZahlen-2]),parseFloat(num2[lZahlen-1]))
         break;
 
         case("/"):
-        divide(num1,num2)
+        return divide(parseFloat(num1[lZahlen-2]),parseFloat(num2[lZahlen-1]))
         break;
     }
 
 
 }
 
-operate(4,5,"-")
 
 
 function Buttons() {
@@ -105,6 +104,7 @@ function Buttons() {
         break;
         case "15":
             button.textContent = "=";
+            button.classList.add("Enter")
         break;
         case "16":
             button.textContent = "clear";
@@ -123,26 +123,56 @@ const btn = document.querySelectorAll(".Buttons")
 let Value = document.querySelector(".display")
 
 let Eingaben = []
-
+let Oper = []
+let LaengeOper = Oper.length
+let Wert
 btn.forEach((button)=> {
     button.addEventListener("click", () => {
-        if (button.textContent !== "clear" &&  !isNaN(parseFloat(button.textContent)) 
+        if (button.textContent !== "clear" &&  !isNaN(parseFloat(button.textContent)&& Oper[LaengeOper -1] === "=") 
         && isFinite(button.textContent)){
+            Value.textContent = "";
         Value.textContent = Value.textContent + button.textContent
+        Wert = Value.textContent;
+        } else if (button.textContent !== "clear" &&  !isNaN(parseFloat(button.textContent)&& Oper[LaengeOper -1] !== "=") 
+            && isFinite(button.textContent)){
+            Value.textContent = Value.textContent + button.textContent
+            Wert = Value.textContent;
+
+
+
         }
-        else if (typeof button.textContent == "string" && button.textContent!== "clear") {
-        Eingaben.push(Value.textContent);
-        Eingaben.push(button.textContent)
-        console.log(Eingaben);
+        else if (typeof button.textContent == "string" && button.textContent!== "clear" && button.textContent) {
+            
+        Eingaben.push(Wert);
+        console.log(Eingaben)
+        Oper.push(button.textContent)
+        console.log(Oper)
         Value.textContent = ""
+       
+
+   
 
         }else if(button.textContent === "clear"){
             Value.textContent = ""
             Eingaben = [];
-            console.log(Eingaben)
+            Oper = [];
+
+        
         }
 
     })
 })
 
 
+const EnterButton = document.querySelector(".Enter")
+
+EnterButton.addEventListener("click", () => {
+Value.textContent = (operate(Eingaben, Eingaben, Oper))
+
+})
+    
+    
+    
+    
+    
+    
