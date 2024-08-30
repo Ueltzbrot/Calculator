@@ -1,21 +1,37 @@
 function add(Value1, Value2){
-    let Result = Value1+Value2
+    let Result = parseFloat(Value1)+parseFloat(Value2)
+
+    if (Result.toString().length > 15){
+    let Wert =  Result.toExponential()
+    return Wert;
+} else{
     return Result
+}
     
 }
 
 let substract = (Value1,Value2) => {
 
-    console.log(Value1-Value2)
+    let Result = (Value1-Value2)
     
-    return Value1-Value2
+    if (Result.toString().length > 15){
+        let Wert =  Result.toExponential()
+        return Wert;
+    } else{
+        return Result
+    }
 }
 
 let multiply = (Value1,Value2) => {
     if (Value1 !== 0 && Value2 !== 0){
         let Step1 = Value1*Value2
         let Result = Math.round((Step1+Number.EPSILON)*100)/100;
-        return Result; 
+            if (Result.toString().length > 15){
+                        let Wert =  Result.toExponential()
+                        return Wert;
+                    } else{
+                        return Result
+                    }
     }else {
         console.log(0);
         return 0;
@@ -28,7 +44,12 @@ let divide = (Value1,Value2) => {
     if (Value1 !== 0 && Value2 !== 0){
         let Step1 = Value1/Value2
         let Result = Math.round((Step1+Number.EPSILON)*100)/100;
-        return Result; 
+                        if (Result.toString().length > 15){
+                            let Wert =  Result.toExponential()
+                            return Wert;
+                        } else{
+                            return Result
+                        }
     }else {
         console.log(0);
         return 0;
@@ -37,38 +58,23 @@ let divide = (Value1,Value2) => {
 
 }
 
-
-let Operation = {
-  
-    firstNum : null,
-    secondNum : null,
-    oper : null,
-    };
-
-
-let firstNumber =""
-let secondNumber =""
-let operator =""
-
-
 const operate = (num1, num2, op) => {
-let lZahlen = num1.length
-let Laenge = op.length
-    switch (op[Laenge-2]){
+    console.log(op)
+    switch (op){
         case "+":
-            return add(parseFloat(num1[lZahlen-2]),parseFloat(num2[lZahlen-1]))
+            return add (num1,num2)
             break;
 
         case "-":
-            return substract(parseFloat(num1[lZahlen-2]),parseFloat(num2[lZahlen-1]))
+            return substract(num1,num2)
             break;
 
         case "x": 
-        return multiply(parseFloat(num1[lZahlen-2]),parseFloat(num2[lZahlen-1]))
+        return multiply(num1,num2)
         break;
 
         case("/"):
-        return divide(parseFloat(num1[lZahlen-2]),parseFloat(num2[lZahlen-1]))
+        return divide(num1,num2)
         break;
     }
 
@@ -78,9 +84,12 @@ let Laenge = op.length
 
 
 function Buttons() {
-    for (let i = 0; i<16; i++){
+    for (let i = 0; i<18; i++){
     const button = document.createElement("button")
     const parent = document.querySelector(".container")
+    if (i<9){
+        button.classList.add("Numbers")
+    }
     button.classList.add("Buttons")
     parent.appendChild(button);
     
@@ -88,19 +97,24 @@ function Buttons() {
     switch(button.textContent){
         case "11":
             button.textContent = 0;
+            button.classList.add("Numbers")
         break;
         case "10":
             button.textContent = "+";
+            button.classList.add("Operator")
         break;
         case "12":
             button.textContent = "-";
+            button.classList.add("Operator")
             
         break;
         case "13":
             button.textContent = "x";
+            button.classList.add("Operator")
         break;
         case "14":
             button.textContent = "/";
+            button.classList.add("Operator")
         break;
         case "15":
             button.textContent = "=";
@@ -108,6 +122,15 @@ function Buttons() {
         break;
         case "16":
             button.textContent = "clear";
+            button.classList.add("clear")
+        break;
+        case "17":
+            button.textContent = ".";
+            button.classList.add("Decimal")
+        break;
+        case "18":
+            button.textContent = "Back";
+            button.classList.add("Backspace")
         break;
 
 
@@ -120,59 +143,129 @@ Buttons()
 
 
 const btn = document.querySelectorAll(".Buttons")
-let Value = document.querySelector(".display")
+const OperatorField = document.querySelectorAll(".Operator")
 
-let Eingaben = []
 let Oper = []
-let LaengeOper = Oper.length
-let Wert
-btn.forEach((button)=> {
-    button.addEventListener("click", () => {
-        if (button.textContent !== "clear" &&  !isNaN(parseFloat(button.textContent)&& Oper[LaengeOper -1] === "=") 
-        && isFinite(button.textContent)){
-            Value.textContent = "";
-        Value.textContent = Value.textContent + button.textContent
-        Wert = Value.textContent;
-        } else if (button.textContent !== "clear" &&  !isNaN(parseFloat(button.textContent)&& Oper[LaengeOper -1] !== "=") 
-            && isFinite(button.textContent)){
-            Value.textContent = Value.textContent + button.textContent
-            Wert = Value.textContent;
+let currentOp = ""
+let previousOp = ""
+
+const displayValue = document.querySelector(".Alt")
+const oldValue = document.querySelector(".Neu")
+
+let currentValue = ""
+let previousValue = ""
 
 
 
-        }
-        else if (typeof button.textContent == "string" && button.textContent!== "clear" && button.textContent) {
-            
-        Eingaben.push(Wert);
-        console.log(Eingaben)
-        Oper.push(button.textContent)
-        console.log(Oper)
-        Value.textContent = ""
-       
 
-   
-
-        }else if(button.textContent === "clear"){
-            Value.textContent = ""
-            Eingaben = [];
-            Oper = [];
-
-        
-        }
-
+OperatorField.forEach((e)=> {
+    e.addEventListener("click", () => {
+        opFunc(e.innerText)
     })
 })
 
+function opFunc(Value){
+if (currentOp !== ""){
+    previousOp = currentOp;
+    currentOp = Value; 
+        if (currentValue !== "" && previousValue !== ""){
+        currentValue = operate(previousValue, currentValue, previousOp)
+        displayValue.innerText = currentValue
+        previousValue = currentValue;
+        oldValue.innerText = `${previousValue} ${currentOp}`
+        currentValue = "";
+        } else {
+oldValue.innerText = `${previousValue} ${currentOp}`
+        }
+        return
+} else if (currentOp == ""){
+    currentOp = Value; 
+    if (currentValue !== ""){
+    previousValue = currentValue;
+    oldValue.innerText = `${previousValue} ${currentOp}`
+    currentValue = "";
+    displayValue.innerText = currentValue; }
 
-const EnterButton = document.querySelector(".Enter")
+    else {
+oldValue.innerText = `${previousValue} ${currentOp}`
+    }
+}
 
-EnterButton.addEventListener("click", () => {
-Value.textContent = (operate(Eingaben, Eingaben, Oper))
+}
+    
+const numberField = document.querySelectorAll(".Numbers")
+
+numberField.forEach((target) => {
+    target.addEventListener("click",() => {
+        display(target.innerText)
+    })
+})
+
+function display(Value){
+if (currentValue.length < 15){
+        if (currentValue.length == 1 && currentValue == 0 && Value == 0){}
+
+        else{
+        currentValue+= Value;
+        displayValue.innerText = currentValue;}}
+    
+    }
+
+const enterButton = document.querySelector(".Enter")
+let Ergebnis = ""
+
+enterButton.addEventListener("click",(target) => {
+if (currentValue == "" && previousValue ==""){
+    displayValue.innerText = "Bitte eine Zahl eingeben"
+        currentOp = ""
+        previousOp = ""
+    oldValue.innerText = "";
+
+}else if (currentValue!=="" && previousValue == ""){
+    displayValue.innerText = currentValue
+    currentValue = ""
+    oldValue.innerText = "";
+
+
+} else{
+    currentValue = operate(previousValue, currentValue, currentOp).toString()
+    currentOp = ""
+    previousOp = ""
+    displayValue.innerText = currentValue
+    previousValue = currentValue
+    oldValue.innerText = ""
+    currentValue = ""
+}
+})
+
+
+const clearing = document.querySelector(".clear");
+clearing.addEventListener("click",(target) => {
+    currentValue = ""
+    previousValue = ""
+    currentOp = ""
+    previousOp = ""
+    oldValue.innerText = ""
+    displayValue.innerText = currentValue;
 
 })
-    
-    
-    
-    
-    
-    
+
+const backspace = document.querySelector(".Backspace")
+
+backspace.addEventListener("click", (target) => {
+    back();
+
+
+})
+
+
+function back(){
+    if (currentValue !== ""){
+        let arr = currentValue.split("")
+        arr = arr.slice(0,-1);
+        currentValue = arr.join("")
+        displayValue.innerText = currentValue;
+
+    }
+    else{}
+}

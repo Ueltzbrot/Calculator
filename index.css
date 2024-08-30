@@ -103,13 +103,13 @@ margin-right: auto;
 
 
 .display{
-
+display: flex;
+flex-direction: column-reverse;
 font-size: 2rem;
 border: 3px solid white;
 margin-bottom: 5px;
-height: 10%;
+height: 15%;
 flex-grow: 1;
-padding: 30px;
 color: white;
 text-align: center;
 border-radius: 5px;
@@ -117,4 +117,22 @@ background-color: #32a1ce;
 max-width: 100%;
 overflow:hidden;
 
+}
+
+.Alt {
+    height: 90%;
+    background-color: #32a1ce;
+    color:white;
+    flex-grow: 1;
+    flex-grow: 0;
+    overflow:hidden;
+    font-size: 2rem;
+}
+.Neu{
+    height:60%;
+   color: white;
+    text-align: end;
+    flex-grow: 0;
+    overflow:hidden;
+    font-size: 1.5rem;
 }
