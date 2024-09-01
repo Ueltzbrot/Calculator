@@ -34,8 +34,7 @@ let multiply = (Value1,Value2) => {
                         return Result
                     }
     }else {
-        console.log(0);
-        return 0;
+        return "0";
     }
 
 
@@ -52,7 +51,9 @@ let divide = (Value1,Value2) => {
                             return Result
                         }
     }else {
-return "dummbeutel"
+alert("dummbeutel")
+
+return "0"
     }
 
 
@@ -160,11 +161,6 @@ OperatorField.forEach((e)=> {
 })
 
 function opFunc(Value){
-if (currentValue == "dummbeutel" || previousValue =="dummbeutel" || displayValue.innerText == "dummbeutel"){
-    clearer()
-    return 
-} else{}
-console.log(currentValue)
 if (currentOp !== ""){
     previousOp = currentOp;
     currentOp = Value;
@@ -222,7 +218,7 @@ if (currentValue.length < 15){
 
 const enterButton = document.querySelector(".Enter")
 
-enterButton.addEventListener("click",(target) => {
+enterButton.addEventListener("click",(e) => {
 if (currentValue == "" && previousValue ==""){
     displayValue.innerText = ""
         currentOp = ""
@@ -247,11 +243,13 @@ if (currentValue == "" && previousValue ==""){
     oldValue.innerText = ""
     currentValue = ""
 }
+e.target.blur()
 })
 
 
 const clearing = document.querySelector(".clear");
-clearing.addEventListener("click",(target) => {
+clearing.addEventListener("click",(e) => {
+    e.target.blur()  
     clearer()
 
 })
@@ -267,9 +265,9 @@ function clearer() {
 
 const backspace = document.querySelector(".Backspace")
 
-backspace.addEventListener("click", (target) => {
+backspace.addEventListener("click", (e) => {
+    e.target.blur()
     back();
-
 
 })
 
@@ -283,11 +281,12 @@ function back(){
 
     }
     else{}
+    e.target.blur()
 }
 
 const decimal = document.querySelector(".Decimal")
 
-decimal.addEventListener("click", () => {
+decimal.addEventListener("click", (e) => {
 
 let checkDec = currentValue.split("")
 
@@ -296,6 +295,6 @@ currentValue += "."
 displayValue.innerText = currentValue;
 }
 else {}
-
+e.target.blur()
 
 })
