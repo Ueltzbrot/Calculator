@@ -12,7 +12,8 @@ function add(Value1, Value2){
 
 let substract = (Value1,Value2) => {
 
-    let Result = (Value1-Value2)
+    let Step1 = (Value1-Value2)
+        let Result = Math.round((Step1+Number.EPSILON)*100)/100;
     
     if (Result.toString().length > 15){
         let Wert =  Result.toExponential()
@@ -23,7 +24,7 @@ let substract = (Value1,Value2) => {
 }
 
 let multiply = (Value1,Value2) => {
-    if (Value1 !== 0 && Value2 !== 0){
+    if (Value1 !== "0" && Value2 !== "0"){
         let Step1 = Value1*Value2
         let Result = Math.round((Step1+Number.EPSILON)*100)/100;
             if (Result.toString().length > 15){
@@ -41,7 +42,7 @@ let multiply = (Value1,Value2) => {
 }
 
 let divide = (Value1,Value2) => {
-    if (Value1 !== 0 && Value2 !== 0){
+    if (Value1 !== "0" && Value2 !== "0"){
         let Step1 = Value1/Value2
         let Result = Math.round((Step1+Number.EPSILON)*100)/100;
                         if (Result.toString().length > 15){
@@ -51,15 +52,13 @@ let divide = (Value1,Value2) => {
                             return Result
                         }
     }else {
-        console.log(0);
-        return 0;
+return "dummbeutel"
     }
 
 
 }
 
 const operate = (num1, num2, op) => {
-    console.log(op)
     switch (op){
         case "+":
             return add (num1,num2)
@@ -144,14 +143,10 @@ Buttons()
 
 const btn = document.querySelectorAll(".Buttons")
 const OperatorField = document.querySelectorAll(".Operator")
-
-let Oper = []
 let currentOp = ""
 let previousOp = ""
-
 const displayValue = document.querySelector(".Alt")
 const oldValue = document.querySelector(".Neu")
-
 let currentValue = ""
 let previousValue = ""
 
@@ -165,33 +160,47 @@ OperatorField.forEach((e)=> {
 })
 
 function opFunc(Value){
+if (currentValue == "dummbeutel" || previousValue =="dummbeutel" || displayValue.innerText == "dummbeutel"){
+    clearer()
+    return 
+} else{}
+console.log(currentValue)
 if (currentOp !== ""){
     previousOp = currentOp;
-    currentOp = Value; 
-        if (currentValue !== "" && previousValue !== ""){
-        currentValue = operate(previousValue, currentValue, previousOp)
-        displayValue.innerText = currentValue
-        previousValue = currentValue;
-        oldValue.innerText = `${previousValue} ${currentOp}`
-        currentValue = "";
-        } else {
-oldValue.innerText = `${previousValue} ${currentOp}`
+    currentOp = Value;
+        if (currentValue !== "" && previousValue !== "" ){
+            currentValue = operate(previousValue, currentValue, previousOp)
+            displayValue.innerText = currentValue
+            previousValue = currentValue;
+            oldValue.innerText = `${previousValue} ${currentOp}`
+            currentValue = "";
+
+        }
+         else {
+            oldValue.innerText = `${previousValue} ${currentOp}`
         }
         return
-} else if (currentOp == ""){
-    currentOp = Value; 
-    if (currentValue !== ""){
-    previousValue = currentValue;
-    oldValue.innerText = `${previousValue} ${currentOp}`
-    currentValue = "";
-    displayValue.innerText = currentValue; }
 
-    else {
-oldValue.innerText = `${previousValue} ${currentOp}`
+
+} else if(currentValue =="" && previousValue =="" && currentOp =="" && Value =="-" ){ 
+    currentValue += Value
+displayValue.innerText = currentValue
+currentOp = ""
+return
+}
+
+else if (currentOp == "" &&previousValue !== ""  || currentValue !== "" ){
+        currentOp = Value;
+
+        if (currentValue !== ""){
+             previousValue = currentValue;
+             oldValue.innerText = `${previousValue} ${currentOp}`
+             currentValue = "";
+             displayValue.innerText = currentValue; }
+         else {
+             oldValue.innerText = `${previousValue} ${currentOp}`
     }
-}
-
-}
+}}
     
 const numberField = document.querySelectorAll(".Numbers")
 
@@ -212,11 +221,10 @@ if (currentValue.length < 15){
     }
 
 const enterButton = document.querySelector(".Enter")
-let Ergebnis = ""
 
 enterButton.addEventListener("click",(target) => {
 if (currentValue == "" && previousValue ==""){
-    displayValue.innerText = "Bitte eine Zahl eingeben"
+    displayValue.innerText = ""
         currentOp = ""
         previousOp = ""
     oldValue.innerText = "";
@@ -226,6 +234,9 @@ if (currentValue == "" && previousValue ==""){
     currentValue = ""
     oldValue.innerText = "";
 
+}else if (currentValue=="" && previousValue !== ""){
+    displayValue.innerText = previousValue
+    oldValue.innerText = "";
 
 } else{
     currentValue = operate(previousValue, currentValue, currentOp).toString()
@@ -241,14 +252,18 @@ if (currentValue == "" && previousValue ==""){
 
 const clearing = document.querySelector(".clear");
 clearing.addEventListener("click",(target) => {
+    clearer()
+
+})
+
+function clearer() {
     currentValue = ""
     previousValue = ""
     currentOp = ""
     previousOp = ""
     oldValue.innerText = ""
-    displayValue.innerText = currentValue;
-
-})
+    displayValue.innerText = ""
+}
 
 const backspace = document.querySelector(".Backspace")
 
@@ -269,3 +284,18 @@ function back(){
     }
     else{}
 }
+
+const decimal = document.querySelector(".Decimal")
+
+decimal.addEventListener("click", () => {
+
+let checkDec = currentValue.split("")
+
+if (!checkDec.includes(".")) {
+currentValue += "."
+displayValue.innerText = currentValue;
+}
+else {}
+
+
+})
